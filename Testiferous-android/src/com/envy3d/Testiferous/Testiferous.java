@@ -14,6 +14,7 @@ public class Testiferous extends AndroidApplication {
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = true;
         
+        
         initialize(new TestiferousGame(), cfg);
     }
 }

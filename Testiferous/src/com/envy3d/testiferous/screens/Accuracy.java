@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,9 +18,9 @@ public class Accuracy extends InputAdapter implements Screen {
 	
 	private TestiferousGame game;
 	private OrthographicCamera camera;
-	private SpriteBatch spriteBatch;
-	private Texture[] textures;
-	private Sprite[] sprites;
+	//private SpriteBatch spriteBatch;
+	//private Texture[] textures;
+	//private Sprite[] sprites;
 	private ShapeRenderer shapeRender;
 	private int[][] locs;
 	private Vector2 touchLoc;
@@ -31,6 +32,9 @@ public class Accuracy extends InputAdapter implements Screen {
 	@Override
 	public void render(float delta) {
 		
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		shapeRender.setProjectionMatrix(camera.combined);
 		shapeRender.begin(ShapeType.FilledCircle);
 		for (int i = 0; i < locs.length / 2; i++) {
@@ -38,7 +42,7 @@ public class Accuracy extends InputAdapter implements Screen {
 			shapeRender.filledCircle(locs[i][0], locs[i][1], locs[i][2], 20);
 			if (Math.pow(touchLoc.x - locs[i][0], 2) + Math.pow(touchLoc.y - locs[i][1], 2) <= locs[i][2] * locs[i][2]) {
 				Gdx.input.vibrate(80);
-				Gdx.app.log("Tester", "Hit Circle");
+				Gdx.app.log(TestiferousGame.LOG, "Hit Circle");
 			}
 		}
 		shapeRender.end();
@@ -49,7 +53,7 @@ public class Accuracy extends InputAdapter implements Screen {
 			if (touchLoc.x >= locs[i][0] && touchLoc.x <= locs[i][0] + locs[i][2]
 				&& touchLoc.y >= locs[i][1] && touchLoc.y <= locs[i][1] + locs[i][2]) {
 				Gdx.input.vibrate(80);
-				Gdx.app.log("Tester", "Hit Square");
+				Gdx.app.log(TestiferousGame.LOG, "Hit Square");
 			}
 		}
 		shapeRender.end();
@@ -103,7 +107,7 @@ public class Accuracy extends InputAdapter implements Screen {
 		//if (0 == pointer) {
 			touchLoc.x = x;
 			touchLoc.y = Math.abs(y - Gdx.graphics.getHeight());
-			Gdx.app.log("Tester", "Touch at: " + x + ", " + y);
+			Gdx.app.log(TestiferousGame.LOG, "Touch at: " + x + ", " + y);
 		//}
 		return true;
 	}
