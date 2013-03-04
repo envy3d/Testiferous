@@ -6,7 +6,7 @@ public class PlayerInput extends InputAdapter {
 	
 	Player player;
 	
-	public PlayerInput(GameLogic gLogic, Player player) {
+	public PlayerInput(Player player) {
 		this.player = player;
 	}
 

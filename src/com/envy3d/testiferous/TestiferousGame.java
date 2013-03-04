@@ -13,6 +13,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.envy3d.testiferous.screens.Accuracy;
 
 public class TestiferousGame extends Game {
+	
+	public static final String VERSION = "0.0.1";
+	public static final String LOG = "Testiferous";
 	/*private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
