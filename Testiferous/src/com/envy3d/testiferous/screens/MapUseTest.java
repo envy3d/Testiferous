@@ -1,11 +1,14 @@
 package com.envy3d.testiferous.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.envy3d.testiferous.TestiferousGame;
 import com.envy3d.testiferous.actors.Player;
-import com.envy3d.testiferous.menu.MenuInput;
+import com.envy3d.testiferous.logic.GameLogic;
+import com.envy3d.testiferous.menu.Menu;
 
 /**
  * 
@@ -16,15 +19,23 @@ import com.envy3d.testiferous.menu.MenuInput;
 public class MapUseTest extends InputAdapter implements Screen {
 
 	private OrthographicCamera cam;
-	private MenuInput menuInput;
+	private Menu menu;
 	private Player player;
+	private GameLogic gameLogic;
+	private TestiferousGame game;
+	private InputMultiplexer inputMultiplexer;
 	
 	public MapUseTest(TestiferousGame game) {
-		
+		this.game = game;
+	}
+	
+	public void initialize(InputMultiplexer inputMultiplexer) {
+		this.inputMultiplexer = inputMultiplexer;
 	}
 	
 	@Override
 	public void render(float delta) {
+		menu.render();
 		
 	}
 
@@ -35,9 +46,7 @@ public class MapUseTest extends InputAdapter implements Screen {
 
 	@Override
 	public void show() {
-		menuInput = new MenuInput();
-		menuInput.Initialize();
-		
+		inputMultiplexer.addProcessor(this);
 	}
 
 	@Override
@@ -64,7 +73,7 @@ public class MapUseTest extends InputAdapter implements Screen {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

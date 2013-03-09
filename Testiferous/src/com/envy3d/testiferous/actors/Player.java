@@ -10,6 +10,9 @@ package com.envy3d.testiferous.actors;
 
 public class Player {
 	
+	public int posX, posY;
+	
+	
 	public Player() {
 		
 	}

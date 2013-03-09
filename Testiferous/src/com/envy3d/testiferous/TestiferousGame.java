@@ -3,6 +3,7 @@ package com.envy3d.testiferous;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,12 +11,16 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.envy3d.testiferous.menu.Menu;
 import com.envy3d.testiferous.screens.Accuracy;
 
 public class TestiferousGame extends Game {
 	
 	public static final String VERSION = "0.0.1";
 	public static final String LOG = "Testiferous";
+	
+	private InputMultiplexer inputMultiplexer;
+	public Menu menu;
 	/*private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
@@ -40,6 +45,9 @@ public class TestiferousGame extends Game {
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
 		*/
+		this.inputMultiplexer = new InputMultiplexer();
+		Gdx.input.setInputProcessor(inputMultiplexer);
+		menu = new Menu(this);
 		setScreen(new Accuracy(this));
 	}
 

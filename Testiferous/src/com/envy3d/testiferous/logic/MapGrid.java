@@ -9,6 +9,7 @@ package com.envy3d.testiferous.logic;
 public class MapGrid {
 	
 	public int[][] colGrid;
+	private int width, height;
 	
 	public MapGrid() {
 
@@ -20,7 +21,9 @@ public class MapGrid {
 	 * @param height
 	 * @param width
 	 */
-	public void Initialize(int height, int width) {
+	public void initialize(int height, int width) {
+		this.width = width;
+		this.height = height;
 		colGrid = new int[height][width];
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
@@ -29,9 +32,15 @@ public class MapGrid {
 		}
 	}
 	
-	public void Initialize(int[][] colGrid) {
+	public void initialize(int[][] colGrid) {
 		this.colGrid = colGrid;
 	}
 	
+	public int getWidth() {
+		return width;
+	}
 	
+	public int getHeight() {
+		return height;
+	}
 }
