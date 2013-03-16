@@ -1,5 +1,7 @@
 package com.envy3d.testiferous.logic;
 
+import com.badlogic.gdx.math.MathUtils;
+
 /**
  * A grid which holds data about whether a location is open or closed
  * 
@@ -34,6 +36,18 @@ public class MapGrid {
 	
 	public void initialize(int[][] colGrid) {
 		this.colGrid = colGrid;
+	}
+	
+	public void initializeRandomly(int height, int width) {
+		this.width = width;
+		this.height = height;
+		int solidTile = width * height;
+		colGrid = new int[height][width];
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				colGrid[i][j] = (MathUtils.random(1) * solidTile) + 1;
+			}
+		}
 	}
 	
 	public int getWidth() {

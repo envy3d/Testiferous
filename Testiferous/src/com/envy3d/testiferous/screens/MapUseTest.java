@@ -31,6 +31,7 @@ public class MapUseTest extends InputAdapter implements Screen {
 	
 	public void initialize(InputMultiplexer inputMultiplexer) {
 		this.inputMultiplexer = inputMultiplexer;
+		menu = new Menu(game);
 	}
 	
 	@Override

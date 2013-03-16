@@ -21,6 +21,7 @@ public class TestiferousGame extends Game {
 	
 	private InputMultiplexer inputMultiplexer;
 	public Menu menu;
+	public boolean loading;
 	/*private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
@@ -29,6 +30,7 @@ public class TestiferousGame extends Game {
 	
 	@Override
 	public void create() {		
+		loading = false;
 		/*float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		

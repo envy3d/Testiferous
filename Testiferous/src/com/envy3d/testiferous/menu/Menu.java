@@ -7,8 +7,9 @@ public class Menu {
 	
 	private TestiferousGame game;
 	public MenuInput menuInput;
-	private Panel[] panels;
+	private Panel[] menuPages;
 	private boolean visible;
+	private int current
 	private InputMultiplexer inputMultiplexer;
 	
 	public Menu(TestiferousGame game) {
@@ -27,9 +28,9 @@ public class Menu {
 	}
 	
 	public void clearMenu() {
-		for (int i = 0; i < panels.length; i++) {
-			if (panels[i] != null)
-				panels[i].destroy();
+		for (int i = 0; i < menuPages.length; i++) {
+			if (menuPages[i] != null)
+				menuPages[i].destroy();
 		}
 	}
 	
