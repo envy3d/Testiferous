@@ -1,43 +1,59 @@
 package com.envy3d.testiferous.ai;
 
+
 import com.badlogic.gdx.utils.BinaryHeap.Node;
+import com.envy3d.testiferous.utils.Point2;
 
 public class PFPoint extends Node {
 
-	public int x, y, locCost, costG, costH;
+	public Point2 pos;
+	public int locCost, costG, costH;
 	public PFPoint[] neighbors;
 	public PFPoint parent;
-	private int highestNeighborIndex, numOfNeighbors;
+	private int neighborsLength, maxNeighbors;
 	public boolean explored;
+	private final int costGDefault = 1000000;
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param cost
+	 * @param neighbors
+	 */
 	public PFPoint(int x, int y, int cost, PFPoint[] neighbors) {
 		super(0);
-		this.x = x;
-		this.y = y;
+		pos = new Point2(x, y);
 		locCost = cost;
 		this.neighbors = neighbors;
-		costG = 0;
+		costG = costGDefault;
 		costH = 0;
 		parent = null;
-		numOfNeighbors = neighbors.length;
-		highestNeighborIndex = numOfNeighbors;
+		maxNeighbors = neighbors.length;
+		neighborsLength = maxNeighbors;
 		explored = false;
 	}
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param cost
+	 * @param numOfNeighbors
+	 */
 	public PFPoint(int x, int y, int cost, int numOfNeighbors) {
 		super(0);
-		this.x = x;
-		this.y = y;
+		pos = new Point2(x, y);
 		locCost = cost;
-		this.numOfNeighbors = numOfNeighbors;
-		this.neighbors = new PFPoint[this.numOfNeighbors];
-		for (int i = 0; i < this.numOfNeighbors; i++) {
+		this.maxNeighbors = numOfNeighbors;
+		this.neighbors = new PFPoint[this.maxNeighbors];
+		for (int i = 0; i < this.maxNeighbors; i++) {
 			neighbors[i] = null;
 		}
-		costG = 0;
+		costG = costGDefault;
 		costH = 0;
 		parent = null;
-		highestNeighborIndex = 0;
+		neighborsLength = 0;
 		explored = false;
 	}
 	
@@ -53,12 +69,23 @@ public class PFPoint extends Node {
 	public void reset() {
 		parent = null;
 		explored = false;
-		costG = 0;
+		costG = costGDefault;
 		costH = 0;
-		for (int i = 0; i < highestNeighborIndex; i++) {
+		for (int i = 0; i < neighborsLength; i++) {
 			if (neighbors[i].explored == true)
 				neighbors[i].reset();
 		}
+	}
+	
+	/**
+	 * Recursively resets toward the Start node.
+	 */
+	public void resetReversed() {
+		explored = false;
+		costG = costGDefault;
+		costH = 0;
+		parent.resetReversed();
+		parent = null;
 	}
 	
 	/**
@@ -67,9 +94,13 @@ public class PFPoint extends Node {
 	 * @param neighbor
 	 */
 	public void addNeighbor(PFPoint neighbor) {
-		if (highestNeighborIndex < numOfNeighbors && neighbor != null) {
-			neighbors[highestNeighborIndex] = neighbor;
-			highestNeighborIndex++;
+		if (neighborsLength < maxNeighbors && neighbor != null) {
+			neighbors[neighborsLength] = neighbor;
+			neighborsLength++;
 		}
+	}
+	
+	public int neighborsLength() {
+		return neighborsLength;
 	}
 }
