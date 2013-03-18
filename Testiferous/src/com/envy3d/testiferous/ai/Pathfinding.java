@@ -37,6 +37,13 @@ public class Pathfinding {
 		frontier = new BinaryHeap<PFPoint>();
 	}
 	
+	/**
+	 * Builds and returns a path.
+	 * 
+	 * @param start
+	 * @param end
+	 * @return The path with the end location at index 0 and the start location at the end
+	 */
 	public Array<Point2> findPath(Point2 start, Point2 end) {
 		nodeMap[(start.y * height) + start.x].costG = nodeMap[(start.y * height) + start.x].locCost;
 		
@@ -44,6 +51,10 @@ public class Pathfinding {
 			exploreNode(frontier.pop());
 		}
 		
+		buildPath(nodeMap[(end.y * height) + end.x]);
+		while (frontier.peek() != null) {
+			frontier.pop().resetReversed();
+		}
 		return path;
 	}
 	
@@ -59,9 +70,13 @@ public class Pathfinding {
 		for (int i = 0; i < node.neighborsLength(); i++) {
 			if (node.neighbors[i].explored == false && node.neighbors[i].costG > (node.costG + node.neighbors[i].locCost)) {
 				frontier.add(node.neighbors[i]);
-				
+				node.neighbors[i].costG = node.neighbors[i].locCost + node.costG;
 			}
 		}
 		node.explored = true;
+	}
+	
+	private float distanceToEnd(Point2 node, Point2 end) {
+		
 	}
 }

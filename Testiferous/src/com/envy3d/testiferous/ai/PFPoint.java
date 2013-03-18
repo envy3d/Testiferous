@@ -84,8 +84,10 @@ public class PFPoint extends Node {
 		explored = false;
 		costG = costGDefault;
 		costH = 0;
-		parent.resetReversed();
-		parent = null;
+		if (parent != null) {
+			parent.resetReversed();
+			parent = null;
+		}
 	}
 	
 	/**
