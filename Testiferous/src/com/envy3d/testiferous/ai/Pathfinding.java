@@ -14,13 +14,18 @@ public class Pathfinding {
 	public Array<Point2> path;
 	
 	public Pathfinding() {
-		
+		path = new Array<Point2>();
+		frontier = new BinaryHeap<PFPoint>();
+		width = 0;
+		height = 0;
 	}
 	
 	public void buildNodes(MapGrid map) {
-		width = map.getWidth();
-		height = map.getHeight();
-		nodeMap = new PFPoint[width * height];
+		if (map != null && (width != map.getWidth() && height != map.getHeight())) {
+			width = map.getWidth();
+			height = map.getHeight();
+			nodeMap = new PFPoint[width * height];
+		}
 		
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {	
@@ -33,8 +38,19 @@ public class Pathfinding {
 			}
 		}
 		
-		path = new Array<Point2>();
-		frontier = new BinaryHeap<PFPoint>();
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {	
+				if (j > 0)
+					nodeMap[(i * height) + j].addNeighbor(nodeMap[(i * height) + j - 1]);
+				else if (j < width - 1)
+					nodeMap[(i * height) + j].addNeighbor(nodeMap[(i * height) + j + 1]);
+				else if (i > 0)
+					nodeMap[(i * height) + j].addNeighbor(nodeMap[((i - 1) * height) + j]);
+				else if (i < height - 1)
+					nodeMap[(i * height) + j].addNeighbor(nodeMap[((i + 1) * height) + j]);
+			}
+		}
+		
 	}
 	
 	/**
@@ -46,13 +62,17 @@ public class Pathfinding {
 	 */
 	public Array<Point2> findPath(Point2 start, Point2 end) {
 		nodeMap[(start.y * height) + start.x].costG = nodeMap[(start.y * height) + start.x].locCost;
+		frontier.add(nodeMap[(start.y * height) + start.x]);
 		
 		while (nodeMap[(end.y * height) + end.x].explored == false) {
-			exploreNode(frontier.pop());
+			if (frontier.size != 0)
+				exploreNode(frontier.pop(), end);
+			else
+				break;
 		}
 		
 		buildPath(nodeMap[(end.y * height) + end.x]);
-		while (frontier.peek() != null) {
+		while (frontier.size != 0) {
 			frontier.pop().resetReversed();
 		}
 		return path;
@@ -66,17 +86,19 @@ public class Pathfinding {
 		}
 	}
 	
-	private void exploreNode(PFPoint node) {
+	private void exploreNode(PFPoint node, Point2 end) {
 		for (int i = 0; i < node.neighborsLength(); i++) {
 			if (node.neighbors[i].explored == false && node.neighbors[i].costG > (node.costG + node.neighbors[i].locCost)) {
 				frontier.add(node.neighbors[i]);
 				node.neighbors[i].costG = node.neighbors[i].locCost + node.costG;
+				node.neighbors[i].costH = distanceToEnd(node.neighbors[i].pos, end);
+				frontier.setValue(node.neighbors[i], node.neighbors[i].costG + node.neighbors[i].costH);
 			}
 		}
 		node.explored = true;
 	}
 	
-	private float distanceToEnd(Point2 node, Point2 end) {
-		
+	private int distanceToEnd(Point2 node, Point2 end) {
+		return (int) Math.sqrt((node.x - end.x) * (node.x - end.x) + (node.y - end.y) * (node.y - end.y)) - 1;
 	}
 }

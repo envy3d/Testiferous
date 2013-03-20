@@ -13,13 +13,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.envy3d.testiferous.menu.Menu;
 import com.envy3d.testiferous.screens.Accuracy;
+import com.envy3d.testiferous.screens.PathingScreen;
 
 public class TestiferousGame extends Game {
 	
 	public static final String VERSION = "0.0.1";
 	public static final String LOG = "Testiferous";
 	
-	private InputMultiplexer inputMultiplexer;
+	public InputMultiplexer inputMultiplexer;
 	public Menu menu;
 	public boolean loading;
 	/*private OrthographicCamera camera;
@@ -50,7 +51,8 @@ public class TestiferousGame extends Game {
 		this.inputMultiplexer = new InputMultiplexer();
 		Gdx.input.setInputProcessor(inputMultiplexer);
 		menu = new Menu(this);
-		setScreen(new Accuracy(this));
+		
+		setScreen(new PathingScreen(this));
 	}
 
 	@Override

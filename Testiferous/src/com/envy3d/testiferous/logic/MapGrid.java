@@ -42,10 +42,20 @@ public class MapGrid {
 		this.width = width;
 		this.height = height;
 		int solidTile = width * height;
-		colGrid = new int[height][width];
+		colGrid = new int[height][];
 		for (int i = 0; i < height; i++) {
+			colGrid[i] = new int[width];
 			for (int j = 0; j < width; j++) {
 				colGrid[i][j] = (MathUtils.random(1) * solidTile) + 1;
+			}
+		}
+		
+		for (int i = 1; i < height - 1; i++) {
+			for (int j = 1; j < width - 1; j++) {
+				if (colGrid[i][j] > 1) {
+					if (colGrid[i][j-1] != 1 || colGrid[i][j+1] != 1 || colGrid[i-1][j] != 1 || colGrid[i+1][j] != 1)
+						colGrid[i][j] = 1;
+				}
 			}
 		}
 	}

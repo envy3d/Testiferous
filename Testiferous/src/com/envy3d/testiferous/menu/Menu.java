@@ -9,7 +9,7 @@ public class Menu {
 	public MenuInput menuInput;
 	private Panel[] menuPages;
 	private boolean visible;
-	private int current
+	private int current;
 	private InputMultiplexer inputMultiplexer;
 	
 	public Menu(TestiferousGame game) {

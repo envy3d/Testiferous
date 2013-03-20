@@ -8,10 +8,10 @@ public class SmoothedPathfinding {
 	private Path smoothedPath;
 	
 	public SmoothedPathfinding(int[][] map) {
-		pathfinding = new Pathfinding(map);
+		pathfinding = new Pathfinding();
 	}
 	
-	public Path createPath() {
-		smoothedPath = new Path();
-	}
+	//public Path createPath() {
+	//	smoothedPath = new Path();
+	//}
 }
