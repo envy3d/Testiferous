@@ -57,12 +57,12 @@ public class PathingScreen extends InputAdapter implements Screen {
 			}
 		}
 		
-		if (testReady == false && testing == true) {
+		if (testReady == false) {
 			for (int i = 1; i < path.size - 1; i++) {
 				pathS.setPosition(path.items[i].x, path.items[i].y);
 				pathS.draw(batch);
 			}
-			startS.setPosition(path.items[path.size].x, path.items[path.size].y);
+			startS.setPosition(path.items[path.size - 1].x, path.items[path.size - 1].y);
 			startS.draw(batch);
 			endS.setPosition(path.items[0].x, path.items[0].y);
 			endS.draw(batch);
@@ -98,6 +98,8 @@ public class PathingScreen extends InputAdapter implements Screen {
 		mapGrid.initialize(Gdx.graphics.getHeight() / 16, Gdx.graphics.getWidth() / 16);
 		aStar = new Pathfinding();
 		aStar.buildNodes(mapGrid);
+		path = new Array<Point2>(true, 10, Point2.class);
+		path.add(new Point2(-100, -100));
 		
 		batch.setProjectionMatrix(cam.combined);
 	}
@@ -127,13 +129,11 @@ public class PathingScreen extends InputAdapter implements Screen {
 	}
 	
 	public void buildTest() {
-		testReady = false;
 		mapGrid.initializeRandomly(Gdx.graphics.getHeight() / 16, Gdx.graphics.getWidth() / 16);
 		aStar.buildNodes(mapGrid);
 	}
 	
 	public void runPathTest() {
-		testReady = true;
 		Point2 start = new Point2(MathUtils.random(mapGrid.getWidth() - 1), MathUtils.random(mapGrid.getHeight()- 1));
 		Point2 end = new Point2(MathUtils.random(mapGrid.getWidth() - 1), MathUtils.random(mapGrid.getHeight() - 1));
 		
@@ -155,16 +155,13 @@ public class PathingScreen extends InputAdapter implements Screen {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		if (testing == false) {
+		if (testReady == false) {
 			buildTest();
-			testing = true;
 			testReady = true;
 		}
 		else {
-			if (testReady == false)
-				buildTest();
-			else
-				runPathTest();
+			runPathTest();
+			testReady = false;
 		}
 		
 		return true;

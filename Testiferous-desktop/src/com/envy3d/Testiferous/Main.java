@@ -9,8 +9,8 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Testiferous";
 		cfg.useGL20 = true;
-		cfg.width = 800;
-		cfg.height = 600;
+		cfg.width = 480;
+		cfg.height = 360;
 		
 		new LwjglApplication(new TestiferousGame(), cfg);
 	}
