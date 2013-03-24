@@ -14,7 +14,7 @@ public class Pathfinding {
 	public Array<Point2> path;
 	
 	public Pathfinding() {
-		path = new Array<Point2>();
+		path = new Array<Point2>(true, 16, Point2.class);
 		frontier = new BinaryHeap<PFPoint>();
 		width = 0;
 		height = 0;
@@ -30,27 +30,26 @@ public class Pathfinding {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {	
 				if ((j == 0 || j == width - 1) && (i == 0 || i == height - 1))
-					nodeMap[(i * height) + j] = new PFPoint(i, j, map.colGrid[i][j], 2);
+					nodeMap[(i * width) + j] = new PFPoint(j, i, map.colGrid[i][j], 2);
 				else if ((j == 0 || j == width - 1) || (i == 0 || i == height - 1))
-					nodeMap[(i * height) + j] = new PFPoint(i, j, map.colGrid[i][j], 3);
+					nodeMap[(i * width) + j] = new PFPoint(j, i, map.colGrid[i][j], 3);
 				else
-					nodeMap[(i * height) + j] = new PFPoint(i, j, map.colGrid[i][j], 4);
+					nodeMap[(i * width) + j] = new PFPoint(j, i, map.colGrid[i][j], 4);
 			}
 		}
 		
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {	
 				if (j > 0)
-					nodeMap[(i * height) + j].addNeighbor(nodeMap[(i * height) + j - 1]);
-				else if (j < width - 1)
-					nodeMap[(i * height) + j].addNeighbor(nodeMap[(i * height) + j + 1]);
-				else if (i > 0)
-					nodeMap[(i * height) + j].addNeighbor(nodeMap[((i - 1) * height) + j]);
-				else if (i < height - 1)
-					nodeMap[(i * height) + j].addNeighbor(nodeMap[((i + 1) * height) + j]);
+					nodeMap[(i * width) + j].addNeighbor(nodeMap[(i * width) + j - 1]);
+				if (j < width - 2)
+					nodeMap[(i * width) + j].addNeighbor(nodeMap[(i * width) + j + 1]);
+				if (i > 0)
+					nodeMap[(i * width) + j].addNeighbor(nodeMap[((i - 1) * width) + j]);
+				if (i < height - 2)
+					nodeMap[(i * width) + j].addNeighbor(nodeMap[((i + 1) * width) + j]);
 			}
 		}
-		
 	}
 	
 	/**
@@ -61,17 +60,25 @@ public class Pathfinding {
 	 * @return The path with the end location at index 0 and the start location at the end
 	 */
 	public Array<Point2> findPath(Point2 start, Point2 end) {
-		nodeMap[(start.y * height) + start.x].costG = nodeMap[(start.y * height) + start.x].locCost;
-		frontier.add(nodeMap[(start.y * height) + start.x]);
+		path.clear();
+		nodeMap[(start.y * width) + start.x].costG = nodeMap[(start.y * width) + start.x].locCost;
+		frontier.add(nodeMap[(start.y * width) + start.x]);
 		
-		while (nodeMap[(end.y * height) + end.x].explored == false) {
+		//Because frontier contains nodes to be explored and not recently explored nodes,
+		//this if will make sure that an end node with only one neighbor can be explored.
+		if (nodeMap[(end.y * width) + end.x].neighborsLength() == 1) {
+			path.add(nodeMap[(end.y * width) + end.x].pos);
+			end.set(nodeMap[(end.y * width) + end.x].neighbors[0].pos);		
+		}
+		
+		while (nodeMap[(end.y * width) + end.x].explored == false) {
 			if (frontier.size != 0)
 				exploreNode(frontier.pop(), end);
 			else
 				break;
 		}
 		
-		buildPath(nodeMap[(end.y * height) + end.x]);
+		buildPath(nodeMap[(end.y * width) + end.x]);
 		while (frontier.size != 0) {
 			frontier.pop().resetReversed();
 		}
@@ -79,7 +86,6 @@ public class Pathfinding {
 	}
 	
 	private void buildPath(PFPoint end) {
-		path.clear();
 		while(end != null) {
 			path.add(end.pos);
 			end = end.parent;
@@ -92,6 +98,7 @@ public class Pathfinding {
 				frontier.add(node.neighbors[i]);
 				node.neighbors[i].costG = node.neighbors[i].locCost + node.costG;
 				node.neighbors[i].costH = distanceToEnd(node.neighbors[i].pos, end);
+				node.neighbors[i].parent = node;
 				frontier.setValue(node.neighbors[i], node.neighbors[i].costG + node.neighbors[i].costH);
 			}
 		}

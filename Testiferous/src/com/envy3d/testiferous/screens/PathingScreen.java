@@ -35,9 +35,12 @@ public class PathingScreen extends InputAdapter implements Screen {
 	public SpriteBatch batch;
 	public Texture wallT, startT, endT, pathT;
 	public Sprite wallS, startS, endS, pathS;
+	private Point2 start, end;
 	
 	public PathingScreen(TestiferousGame game) {
 		this.game = game;
+		start = new Point2(0,0);
+		end = new Point2(5,5);
 	}
 
 	
@@ -48,6 +51,13 @@ public class PathingScreen extends InputAdapter implements Screen {
 		
 		batch.begin();
 		
+		if (testReady == false) {
+			for (int i = 1; i < path.size - 1; i++) {
+				pathS.setPosition(path.items[i].x * 16, path.items[i].y * 16);
+				pathS.draw(batch);
+			}		
+		}
+		
 		for (int i = 0; i < mapGrid.getHeight(); i++) {
 			for (int j = 0; j < mapGrid.getWidth(); j++) {
 				if (mapGrid.colGrid[i][j] > 1) {
@@ -57,17 +67,10 @@ public class PathingScreen extends InputAdapter implements Screen {
 			}
 		}
 		
-		if (testReady == false) {
-			for (int i = 1; i < path.size - 1; i++) {
-				pathS.setPosition(path.items[i].x, path.items[i].y);
-				pathS.draw(batch);
-			}
-			startS.setPosition(path.items[path.size - 1].x, path.items[path.size - 1].y);
-			startS.draw(batch);
-			endS.setPosition(path.items[0].x, path.items[0].y);
-			endS.draw(batch);
-			
-		}
+		startS.setPosition(start.x * 16, start.y * 16);
+		startS.draw(batch);
+		endS.setPosition(end.x * 16, end.y * 16);
+		endS.draw(batch);
 		
 		batch.end();
 	}
@@ -98,6 +101,7 @@ public class PathingScreen extends InputAdapter implements Screen {
 		mapGrid.initialize(Gdx.graphics.getHeight() / 16, Gdx.graphics.getWidth() / 16);
 		aStar = new Pathfinding();
 		aStar.buildNodes(mapGrid);
+		
 		path = new Array<Point2>(true, 10, Point2.class);
 		path.add(new Point2(-100, -100));
 		
@@ -131,11 +135,9 @@ public class PathingScreen extends InputAdapter implements Screen {
 	public void buildTest() {
 		mapGrid.initializeRandomly(Gdx.graphics.getHeight() / 16, Gdx.graphics.getWidth() / 16);
 		aStar.buildNodes(mapGrid);
-	}
-	
-	public void runPathTest() {
-		Point2 start = new Point2(MathUtils.random(mapGrid.getWidth() - 1), MathUtils.random(mapGrid.getHeight()- 1));
-		Point2 end = new Point2(MathUtils.random(mapGrid.getWidth() - 1), MathUtils.random(mapGrid.getHeight() - 1));
+		
+		start = new Point2(MathUtils.random(mapGrid.getWidth() - 1), MathUtils.random(mapGrid.getHeight()- 1));
+		end = new Point2(MathUtils.random(mapGrid.getWidth() - 1), MathUtils.random(mapGrid.getHeight() - 1));
 		
 		while (mapGrid.colGrid[start.y][start.x] != 1 && mapGrid.colGrid[end.y][end.x] != 1) { 
 			start.x = MathUtils.random(mapGrid.getWidth());
@@ -143,8 +145,10 @@ public class PathingScreen extends InputAdapter implements Screen {
 			end.x = MathUtils.random(mapGrid.getWidth());
 			end.y = MathUtils.random(mapGrid.getHeight());
 		}
+	}
+	
+	public void runPathTest() {
 		path = aStar.findPath(start, end);
-		
 	}
 
 	@Override
