@@ -31,11 +31,11 @@ public class PathingScreen extends InputAdapter implements Screen {
 	private Pathfinding aStar;
 	private Array<Point2> path;
 	private boolean testReady = false;
-	private boolean testing = false;;
 	public SpriteBatch batch;
 	public Texture wallT, startT, endT, pathT;
 	public Sprite wallS, startS, endS, pathS;
 	private Point2 start, end;
+	public int timer = 0;
 	
 	public PathingScreen(TestiferousGame game) {
 		this.game = game;

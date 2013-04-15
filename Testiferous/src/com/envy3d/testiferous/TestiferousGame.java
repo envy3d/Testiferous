@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.envy3d.testiferous.menu.Menu;
 import com.envy3d.testiferous.screens.Accuracy;
+import com.envy3d.testiferous.screens.GameScreen;
 import com.envy3d.testiferous.screens.PathingScreen;
 
 public class TestiferousGame extends Game {
@@ -23,6 +24,8 @@ public class TestiferousGame extends Game {
 	public InputMultiplexer inputMultiplexer;
 	public Menu menu;
 	public boolean loading;
+	public int virtualScreenWidth, virtualScreenHeight;
+	public int pixelMultiplier;
 	/*private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
@@ -32,10 +35,15 @@ public class TestiferousGame extends Game {
 	@Override
 	public void create() {		
 		loading = false;
-		/*float w = Gdx.graphics.getWidth();
+		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
+		float tempDim = (h > w) ? h : w;
 		
-		camera = new OrthographicCamera(1, h/w);
+		pixelMultiplier = (int)((tempDim / 1025) + 1);
+		virtualScreenWidth = (int)(w / pixelMultiplier);
+		virtualScreenHeight = (int)(h / pixelMultiplier);
+		
+		/*camera = new OrthographicCamera(1, h/w);
 		batch = new SpriteBatch();
 		
 		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
@@ -52,7 +60,7 @@ public class TestiferousGame extends Game {
 		Gdx.input.setInputProcessor(inputMultiplexer);
 		menu = new Menu(this);
 		
-		setScreen(new PathingScreen(this));
+		setScreen(new GameScreen(this));
 	}
 
 	@Override
