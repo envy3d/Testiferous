@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Testiferous/Testiferous.iml" filepath="$PROJECT_DIR$/Testiferous/Testiferous.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Testiferous-android/Testiferous-android.iml" filepath="$PROJECT_DIR$/Testiferous-android/Testiferous-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Testiferous-desktop/Testiferous-desktop.iml" filepath="$PROJECT_DIR$/Testiferous-desktop/Testiferous-desktop.iml" />
+    </modules>
+  </component>
+</project>
+
