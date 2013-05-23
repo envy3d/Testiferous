@@ -165,3 +165,6 @@ pip-log.txt
 # Custom ignore gwt stuff
 war/
 gwt-unitCache/
+
+# Custom ignore IDEA fluff
+.idea/workspace.xml
